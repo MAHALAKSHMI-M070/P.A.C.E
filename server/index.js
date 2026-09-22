@@ -9,7 +9,11 @@ const app = express()
 const port = Number(process.env.PORT || 5000)
 const sessionDays = Number(process.env.SESSION_DAYS || 7)
 
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://127.0.0.1:5173' }))
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173,http://127.0.0.1:5173').split(',').map((origin) => origin.trim())
+app.use(cors({ origin: (requestOrigin, callback) => {
+  if (!requestOrigin || allowedOrigins.includes(requestOrigin)) return callback(null, true)
+  return callback(new Error('Origin is not allowed by CORS'))
+} }))
 app.use(express.json())
 
 const userSchema = new mongoose.Schema({
