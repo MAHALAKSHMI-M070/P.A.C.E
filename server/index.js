@@ -11,7 +11,8 @@ const sessionDays = Number(process.env.SESSION_DAYS || 7)
 
 const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173,http://127.0.0.1:5173').split(',').map((origin) => origin.trim())
 app.use(cors({ origin: (requestOrigin, callback) => {
-  if (!requestOrigin || allowedOrigins.includes(requestOrigin)) return callback(null, true)
+  const isLocalOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(requestOrigin || '')
+  if (!requestOrigin || allowedOrigins.includes(requestOrigin) || isLocalOrigin) return callback(null, true)
   return callback(new Error('Origin is not allowed by CORS'))
 } }))
 app.use(express.json())
