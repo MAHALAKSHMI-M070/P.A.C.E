@@ -9,7 +9,7 @@ type Task = { _id: string; title: string; category: Category; due: string; compl
 type User = { id: string; name: string; email: string; streak: number; streakFreezeAvailable: boolean }
 type AuthForm = { name: string; email: string; password: string }
 
-const API_URL = 'http://localhost:5000/api'
+const API_URL = 'https://p-a-c-e.onrender.com'
 const badgeList = [
   { icon: '✦', title: 'First step', text: 'Create your first task', earned: true },
   { icon: '7', title: 'On a roll', text: 'Keep a 7 day streak', earned: true },
