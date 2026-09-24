@@ -9,7 +9,12 @@ const app = express()
 const port = Number(process.env.PORT || 5000)
 const sessionDays = Number(process.env.SESSION_DAYS || 7)
 
-const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173,http://127.0.0.1:5173').split(',').map((origin) => origin.trim())
+const allowedOrigins = [...new Set([
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://pacetodo.vercel.app',
+  ...(process.env.CLIENT_URL || '').split(','),
+].map((origin) => origin.trim()).filter(Boolean))]
 app.use(cors({ origin: (requestOrigin, callback) => {
   const isLocalOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(requestOrigin || '')
   if (!requestOrigin || allowedOrigins.includes(requestOrigin) || isLocalOrigin) return callback(null, true)
